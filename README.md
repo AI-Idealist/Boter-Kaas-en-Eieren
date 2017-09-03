@@ -8,7 +8,8 @@ Er zijn drie niveaus van intelligentie geprogrammeerd.
 2. De agent kiest op basis van een analyse van kansen en bedreigingen, maar kijkt NIET een stap vooruit.
 3. De agent denkt eerst een aantal stappen vooruit en analyseert dan pas kansen en bedreigingen. Dit moet nog geïmplenteerd worden.
 
-Bij niveau 2 analyseert de agent de opstelling via het volgende algoritme
+Bij niveau 2 analyseert de agent de opstelling via het volgende algoritme:
+
 +100 voor IEDERE 3-op-rij voor de agent
 + 10 voor IEDERE 2-op-een-rij voor de agent
 + 1 voor IEDERE 1-op-een-rij voor de agent.
