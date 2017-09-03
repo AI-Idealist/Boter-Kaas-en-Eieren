@@ -11,8 +11,8 @@ Er zijn drie niveaus van intelligentie geprogrammeerd.
 Bij niveau 2 analyseert de agent de opstelling via het volgende algoritme:
 
 +100 voor IEDERE 3-op-rij voor de agent
-+ 10 voor IEDERE 2-op-een-rij voor de agent
-+ 1 voor IEDERE 1-op-een-rij voor de agent.
++10 voor IEDERE 2-op-een-rij voor de agent
++1 voor IEDERE 1-op-een-rij voor de agent.
 
 De tegenstander (De gebruiker dus) krijgt negatieve scores. -100,-10,-1 voor 3-op-eenrij,
 2-op-een-rij of 1-op-een rij.
