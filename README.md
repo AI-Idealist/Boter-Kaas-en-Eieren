@@ -6,14 +6,27 @@ Boter-kaas-en-eieren is een spel met twee spelers: een speler gebruikt het teken
 Er zijn drie niveaus van intelligentie geprogrammeerd. 
 1. De agent kiest steeds een willekeurige zet
 2. De agent kiest op basis van een analyse van kansen en bedreigingen, maar kijkt NIET een stap vooruit.
-3. De agent denkt eerst een aantal stappen vooruit en analyseert dan pas kansen en bedreigingen.
+3. De agent denkt eerst een aantal stappen vooruit en analyseert dan pas kansen en bedreigingen. Dit moet nog geïmplenteerd worden.
 
 Bij niveau 2 analyseert de agent de opstelling via het volgende algoritme
++100 voor IEDERE 3-op-rij voor de agent
++ 10 voor IEDERE 2-op-een-rij voor de agent
++ 1 voor IEDERE 1-op-een-rij voor de agent.
 
-    +100 for EACH 3-in-a-line for computer.
-    +10 for EACH two-in-a-line (with a empty cell) for computer.
-    +1 for EACH one-in-a-line (with two empty cells) for computer.
-    Negative scores for opponent, i.e., -100, -10, -1 for EACH opponent's 3-in-a-line, 2-in-a-line and 1-in-a-line.
-    0 otherwise (empty lines or lines with both computer's and opponent's seeds).
+De tegenstander (De gebruiker dus) krijgt negatieve scores. -100,-10,-1 voor 3-op-eenrij,
+2-op-een-rij of 1-op-een rij.
 
-For Tic-Tac-Toe, compute the scores for each of the 8 lines (3 rows, 3 columns and 2 diagonals) and obtain the sum.
+De score van de opstelling wordt berekend door alle rij-scores op te tellen voor de 8 lijnen in het spel (3 rijen, 3 kolommen en 2 diagonalen) 
+
+In de code komen een aantal begrippen steeds terug:
+
+gebruiker: de persoon achter de computer (U dus)
+agent: verzameling algortimes die beslissen wat de beste zet is
+symbool: een teken om de agent en de gebruiker te onderscheidden (X of een O)
+bord: mogelijke plaatsen waar een symbool geplaats kan worden
+opstelling: een combinatie van agent en spelerssysmbolen.
+zet: een beslissing om het symbool van de agent op een specifieke plek op bord te plaatsen. Leidt tot een  verandering in opstelling.
+mogelijke zet: alle mogelijk zetten binnen de regels van het spel.
+beste zet: een zet met de grootste kans op winnen voor de agent. Leidt tot de beste opstelling voor de agent.
+
+   
