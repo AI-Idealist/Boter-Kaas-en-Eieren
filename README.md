@@ -10,9 +10,9 @@ Er zijn drie niveaus van intelligentie geprogrammeerd.
 
 Bij niveau 2 analyseert de agent de opstelling via het volgende algoritme:
 
-+100 voor IEDERE 3-op-rij voor de agent
-+10 voor IEDERE 2-op-een-rij voor de agent
-+1 voor IEDERE 1-op-een-rij voor de agent.
+1. +100 voor IEDERE 3-op-rij voor de agent
+2. +10 voor IEDERE 2-op-een-rij voor de agent
+3. +1 voor IEDERE 1-op-een-rij voor de agent.
 
 De tegenstander (De gebruiker dus) krijgt negatieve scores. -100,-10,-1 voor 3-op-eenrij,
 2-op-een-rij of 1-op-een rij.
@@ -21,13 +21,13 @@ De score van de opstelling wordt berekend door alle rij-scores op te tellen voor
 
 In de code komen een aantal begrippen steeds terug:
 
-gebruiker: de persoon achter de computer (U dus)
-agent: verzameling algortimes die beslissen wat de beste zet is
-symbool: een teken om de agent en de gebruiker te onderscheidden (X of een O)
-bord: mogelijke plaatsen waar een symbool geplaats kan worden
-opstelling: een combinatie van agent en spelerssysmbolen.
-zet: een beslissing om het symbool van de agent op een specifieke plek op bord te plaatsen. Leidt tot een  verandering in opstelling.
-mogelijke zet: alle mogelijk zetten binnen de regels van het spel.
-beste zet: een zet met de grootste kans op winnen voor de agent. Leidt tot de beste opstelling voor de agent.
+1. gebruiker: de persoon achter de computer (U dus)
+2. agent: verzameling algortimes die beslissen wat de beste zet is
+3. symbool: een teken om de agent en de gebruiker te onderscheidden (X of een O)
+4. bord: mogelijke plaatsen waar een symbool geplaats kan worden
+5. opstelling: een combinatie van agent en spelerssysmbolen.
+6. zet: een beslissing om het symbool van de agent op een specifieke plek op bord te plaatsen. Leidt tot een  verandering in opstelling.
+7. mogelijke zet: alle mogelijk zetten binnen de regels van het spel.
+8. beste zet: een zet met de grootste kans op winnen voor de agent. Leidt tot de beste opstelling voor de agent.
 
    
