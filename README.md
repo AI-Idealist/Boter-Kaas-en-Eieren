@@ -18,16 +18,3 @@ De tegenstander (De gebruiker dus) krijgt negatieve scores. -100,-10,-1 voor 3-o
 2-op-een-rij of 1-op-een rij.
 
 De score van de opstelling wordt berekend door alle rij-scores op te tellen voor de 8 lijnen in het spel (3 rijen, 3 kolommen en 2 diagonalen) 
-
-In de code komen een aantal begrippen steeds terug:
-
-1. gebruiker: de persoon achter de computer (U dus)
-2. agent: verzameling algortimes die beslissen wat de beste zet is
-3. symbool: een teken om de agent en de gebruiker te onderscheidden (X of een O)
-4. bord: mogelijke plaatsen waar een symbool geplaats kan worden
-5. opstelling: een combinatie van agent en spelerssysmbolen.
-6. zet: een beslissing om het symbool van de agent op een specifieke plek op bord te plaatsen. Leidt tot een  verandering in opstelling.
-7. mogelijke zet: alle mogelijk zetten binnen de regels van het spel.
-8. beste zet: een zet met de grootste kans op winnen voor de agent. Leidt tot de beste opstelling voor de agent.
-
-   
