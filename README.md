@@ -5,8 +5,8 @@ Boter-kaas-en-eieren is een spel met twee spelers: een speler gebruikt het teken
 
 Er zijn drie niveaus van intelligentie geprogrammeerd. 
 1. De agent kiest steeds een willekeurige zet
-2. De agent kiest op basis van een analyse van kansen en bedreigingen, maar kijkt NIET een stap vooruit.
-3. De agent denkt eerst een aantal stappen vooruit en analyseert dan pas kansen en bedreigingen. Dit moet nog geïmplenteerd worden.
+2. De agent kiest op basis van een analyse van kansen en bedreigingen met slechts de volgende stap in gedachten.
+3. De agent denkt eerst een aantal stappen vooruit en analyseert kansen en bedreigingen. 
 
 Bij niveau 2 analyseert de agent de opstelling via het volgende algoritme:
 
