@@ -1,12 +1,16 @@
-package tictactoe;
+package boterkaaseieren;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class AISpeler {
+     static final int EMPTY = -1;
+     static final int USER = 0;
+     static final int AGENT = 1;
+     static final int DIM = 3;
      private Bord bord;
-     private char[][] lcellen = new char[3][3];
+     private int[][] lcellen = new int[DIM][DIM];
       
     public AISpeler(Bord pbord) {
       bord = pbord;
@@ -48,7 +52,7 @@ public class AISpeler {
       // Search for empty cells and add to the List
       for (int i = 0; i <= 2; i++) {
          for (int j = 0; j <= 2; j++) {
-            if (lcellen[j][i] == bord.e) {
+            if (lcellen[j][i] == -1) {
                nextMoves.add(new int[] {j, i});
             }
          }
@@ -64,8 +68,8 @@ public class AISpeler {
             int[] zet = opties.get(i);
             int kolom = zet[0];
             int rij = zet[1];
-            char tmp = lcellen[kolom][rij];
-            lcellen[kolom][rij] = bord.o;
+            int tmp = lcellen[kolom][rij];
+            lcellen[kolom][rij] = 1;
             
             int score = EvalueerOpstelling(); // bepaal hoe goed die is. 
             if (score >= hiscore) {
@@ -74,13 +78,8 @@ public class AISpeler {
             } 
             System.out.println("i :"+ i + " kolom : " + zet[0] + " rij : " + zet[1] + " score : " + score + " hiscore : " + hiscore + " index : " + index);
             
-             for (int k=0;k <= 2;k++) {
-                for (int j=0;j<=2;j++) {
-                   System.out.print(lcellen[k][j]);
-                }
-               System.out.println(); 
-              } 
-             System.out.println(" ");    
+             printbord();
+            
              lcellen[kolom][rij] = tmp; // zet cellen terug naar de uitgangssituatie.
         }
      int[] zet = opties.get(index);
@@ -109,14 +108,14 @@ public class AISpeler {
       int score = 0; 
  
       // First cell
-      if (lcellen[col1][row1] == bord.o) {
+      if (lcellen[col1][row1] ==  AGENT) {
          score = 1;
-      } else if (lcellen[col1][row1] == bord.x) {
+      } else if (lcellen[col1][row1] == USER) {
          score = -1;
       }
  
       // Second cell
-      if (lcellen[col2][row2] == bord.o) {
+      if (lcellen[col2][row2] == AGENT) {
          if (score == 1) {   // cell1 is mySeed
             score = 10;
          } else if (score == -1) {  // cell1 is oppSeed
@@ -124,7 +123,7 @@ public class AISpeler {
          } else {  // cell1 is empty
             score = 1;
          }
-      } else if (lcellen[col2][row2] == bord.x) {
+      } else if (lcellen[col2][row2] == USER) {
          if (score == -1) { // cell1 is oppSeed
             score = -10;
          } else if (score == 1) { // cell1 is mySeed
@@ -135,7 +134,7 @@ public class AISpeler {
       }
  
       // Third cell
-      if (lcellen[col3][row3] == bord.o) {
+      if (lcellen[col3][row3] == AGENT) {
           
          if (score > 0) {  // cell1 and/or cell2 is mySeed
             score *= 10;
@@ -144,7 +143,7 @@ public class AISpeler {
          } else {  // cell1 and cell2 are empty
             score = 1;
          }
-      } else if (lcellen[col3][row3] == bord.x) {
+      } else if (lcellen[col3][row3] == USER) {
           
          if (score < 0) {  // cell1 and/or cell2 is oppSeed
             score *= 10;
@@ -157,14 +156,16 @@ public class AISpeler {
       return score;
    } 
    
-    public void printcel(int i, int j) {
-            System.out.print(lcellen[i][j]);
-        }
+   public void printcel(int j, int i) {
+      if (lcellen[j][i] == -1) System.out.print("-");
+      if (lcellen[j][i] == 0) System.out.print("x");
+      if (lcellen[j][i] == 1) System.out.print("o");
+    }
         
         public void printbord() {
            for (int i=0;i <= 2;i++) {
                 for (int j=0;j<=2;j++) {
-                    printcel(i,j);
+                    printcel(j,i);
                 }
                System.out.println(); 
           } 

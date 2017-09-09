@@ -1,11 +1,15 @@
-package tictactoe;
+package boterkaaseieren;
 
 import java.util.Scanner;
 
 public class Spel {
+  static final int EMPTY = -1;
+  static final int USER = 0;
+  static final int AGENT = 1;
+ 
   Bord bord = new Bord();
   int[] zet= new int[] {-1,-1};
-  AISpeler aispeler = new AISpeler(bord);
+  AISpelerMinMax aispeler = new AISpelerMinMax(bord);
    
 public int[] GebruikerKiestZet(){
   int[] zet = new int[] {-1,-1};
@@ -35,21 +39,21 @@ public int[] GebruikerKiestZet(){
         if(antwoord.equalsIgnoreCase("N")) {
              zet[0] = 1;
              zet[1] = 1;
-             bord.DoeZet(zet, "agent");  
+             bord.DoeZet(zet, AGENT);  
              bord.printbord();
         }
         
         while(true){ 
             zet = GebruikerKiestZet();
-            bord.DoeZet(zet,"gebruiker"); 
+            bord.DoeZet(zet,USER); 
             bord.printbord();
-            if (bord.WinnendeZet(zet,"gebruiker")) {System.out.println("Jij Wint!");break;}
+            if (bord.WinnendeZet(zet,USER)) {System.out.println("Jij Wint!");break;}
             else if (bord.isGelijkSpel()) {System.out.println("Gelijk spel");break;}
             
-            zet = aispeler.KiestZetNaief();
-            bord.DoeZet(zet, "agent");
+            zet = aispeler.KiestZetIntelligent();
+            bord.DoeZet(zet, AGENT);
              bord.printbord();
-            if (bord.WinnendeZet(zet,"agent")) {System.out.println("Agent wint!");break;}
+            if (bord.WinnendeZet(zet,AGENT)) {System.out.println("Agent wint!");break;}
             else if (bord.isGelijkSpel()) {System.out.println("Gelijk spel");break;}
         }
         return 1;
