@@ -4,32 +4,49 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static boterkaaseieren.Spel.EMPTY;
+import static boterkaaseieren.Spel.AGENT;
+import static boterkaaseieren.Spel.USER;
+import static boterkaaseieren.Spel.DIM;
+import java.util.Scanner;
+
 public class AISpeler {
-     static final int EMPTY = -1;
-     static final int USER = 0;
-     static final int AGENT = 1;
-     static final int DIM = 3;
-     private Bord bord;
-     private int[][] lcellen = new int[DIM][DIM];
+  private Bord bord;
+  private int[][] lvelden = new int[DIM][DIM];
       
-    public AISpeler(Bord pbord) {
-      bord = pbord;
-   } 
+public AISpeler(Bord pbord) {
+  bord = pbord;
+} 
  
+public int[] vraagtZet(){
+  int[] zet = new int[] {-1,-1};
+
+  Scanner scan = new Scanner(System.in);
+      
+  while (!bord.isLegaleZet(zet)){
+    System.out.print("Agent vraagt, welke kolom moet ik kiezen? ");
+     int rij = scan.nextInt();
+    System.out.print("Agent vraagt, welke rij moet ik kiezen? ");
+    int kol = scan.nextInt(); 
+    zet[0] = kol;
+    zet[1] = rij;
+  }
+  return zet;
+}
+    
     // Agent kiest zet alleen obv huidige opstelling. Dus kijkt NIET vooruit
-    public int[] KiestZetNaief() {
-    int[] zet = new int[2];
-     // kopieer bordcellen om neveneffecten te voorkomen.
-       for(int i = 0; i <= 2; i++) {
-         for (int j = 0; j <=2 ; j++) {
-          lcellen[i][j] = bord.cellen[i][j];
-         }
-       }
-    List<int[]> mzetten = BepaalMogelijkeZetten();
-    zet = BepaalBesteZet(mzetten);
-  
-    return zet; 
+public int[] KiestZetNaief() {
+  int[] zet = new int[2];
+  // kopieer bordcellen om neveneffecten te voorkomen.
+  for(int i = 0; i <= 2; i++) {
+    for (int j = 0; j <=2 ; j++) {
+      lvelden[i][j] = bord.velden[i][j];
     }
+  }
+  List<int[]> mzetten = BepaalMogelijkeZetten();
+  zet = BepaalBesteZet(mzetten);
+  return zet; 
+}
  
     // Agent kiest steeds een wilekeurige zet 
     public int[] KiestZetWill() {
@@ -47,12 +64,12 @@ public class AISpeler {
     }
     
    private List<int[]> BepaalMogelijkeZetten() {
-      List<int[]> nextMoves = new ArrayList<int[]>(); // allocate List
+      List<int[]> nextMoves = new ArrayList<int[]>(); 
  
-      // Search for empty cells and add to the List
+      // zoek lege velden, dus mogelijke zetten
       for (int i = 0; i <= 2; i++) {
          for (int j = 0; j <= 2; j++) {
-            if (lcellen[j][i] == -1) {
+            if (lvelden[j][i] == EMPTY) {
                nextMoves.add(new int[] {j, i});
             }
          }
@@ -60,7 +77,7 @@ public class AISpeler {
       return nextMoves;
    }
      
-   public int[] BepaalBesteZet(List<int[]>  opties) {
+   private int[] BepaalBesteZet(List<int[]>  opties) {
       int hiscore = Integer.MIN_VALUE;
       int index = -1; //op welke plaats in de lijst van mogelijke zetten staat de beste zet.
         
@@ -68,8 +85,8 @@ public class AISpeler {
             int[] zet = opties.get(i);
             int kolom = zet[0];
             int rij = zet[1];
-            int tmp = lcellen[kolom][rij];
-            lcellen[kolom][rij] = 1;
+            int tmp = lvelden[kolom][rij];
+            lvelden[kolom][rij] = 1;
             
             int score = EvalueerOpstelling(); // bepaal hoe goed die is. 
             if (score >= hiscore) {
@@ -80,7 +97,7 @@ public class AISpeler {
             
              printbord();
             
-             lcellen[kolom][rij] = tmp; // zet cellen terug naar de uitgangssituatie.
+             lvelden[kolom][rij] = tmp; // zet velden terug naar de uitgangssituatie.
         }
      int[] zet = opties.get(index);
      return zet;
@@ -108,14 +125,14 @@ public class AISpeler {
       int score = 0; 
  
       // First cell
-      if (lcellen[col1][row1] ==  AGENT) {
+      if (lvelden[col1][row1] ==  AGENT) {
          score = 1;
-      } else if (lcellen[col1][row1] == USER) {
+      } else if (lvelden[col1][row1] == USER) {
          score = -1;
       }
  
       // Second cell
-      if (lcellen[col2][row2] == AGENT) {
+      if (lvelden[col2][row2] == AGENT) {
          if (score == 1) {   // cell1 is mySeed
             score = 10;
          } else if (score == -1) {  // cell1 is oppSeed
@@ -123,7 +140,7 @@ public class AISpeler {
          } else {  // cell1 is empty
             score = 1;
          }
-      } else if (lcellen[col2][row2] == USER) {
+      } else if (lvelden[col2][row2] == USER) {
          if (score == -1) { // cell1 is oppSeed
             score = -10;
          } else if (score == 1) { // cell1 is mySeed
@@ -134,7 +151,7 @@ public class AISpeler {
       }
  
       // Third cell
-      if (lcellen[col3][row3] == AGENT) {
+      if (lvelden[col3][row3] == AGENT) {
           
          if (score > 0) {  // cell1 and/or cell2 is mySeed
             score *= 10;
@@ -143,7 +160,7 @@ public class AISpeler {
          } else {  // cell1 and cell2 are empty
             score = 1;
          }
-      } else if (lcellen[col3][row3] == USER) {
+      } else if (lvelden[col3][row3] == USER) {
           
          if (score < 0) {  // cell1 and/or cell2 is oppSeed
             score *= 10;
@@ -156,20 +173,19 @@ public class AISpeler {
       return score;
    } 
    
-   public void printcel(int j, int i) {
-      if (lcellen[j][i] == -1) System.out.print("-");
-      if (lcellen[j][i] == 0) System.out.print("x");
-      if (lcellen[j][i] == 1) System.out.print("o");
+   private void printcel(int j, int i) {
+      if (lvelden[j][i] == -1) System.out.print("-");
+      if (lvelden[j][i] == 0) System.out.print("x");
+      if (lvelden[j][i] == 1) System.out.print("o");
     }
         
-        public void printbord() {
-           for (int i=0;i <= 2;i++) {
-                for (int j=0;j<=2;j++) {
-                    printcel(j,i);
-                }
-               System.out.println(); 
-          } 
-         System.out.println();    
-     }
- 
-}
+    private void printbord() {
+      for (int i=0;i <= 2;i++) {
+        for (int j=0;j<=2;j++) {
+          printcel(j,i);
+        }
+        System.out.println(); 
+      } 
+      System.out.println();    
+    }
+} // einde klasse

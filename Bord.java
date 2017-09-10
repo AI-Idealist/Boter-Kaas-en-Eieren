@@ -1,18 +1,19 @@
 package boterkaaseieren;
 
-public class Bord {
-        static final int EMPTY = -1;
-        static final int USER = 0;
-        static final int AGENT = 1;
-        static final int DIM = 3;
-           public int[][] cellen = new int[DIM][DIM];; 
-  
+import static boterkaaseieren.Spel.EMPTY;
+import static boterkaaseieren.Spel.AGENT;
+import static boterkaaseieren.Spel.USER;
+import static boterkaaseieren.Spel.DIM;
 
+public class Bord {
+     
+        public int[][] velden = new int[DIM][DIM];; 
+  
         public Bord() {
          
           for (int i=0;i <= DIM-1;i++) {
              for (int j=0;j <= DIM-1;j++) {
-                cellen[j][i] = EMPTY;
+                velden[j][i] = EMPTY;
              }
           }   
         }  
@@ -23,7 +24,7 @@ public class Bord {
             int prij = pzet[1];
             
             if ( (0 <= pkolom && pkolom <= DIM-1) && (0 <= prij && prij <= DIM-1)) {
-               if ( cellen[pkolom][prij] == EMPTY ) {
+               if ( velden[pkolom][prij] == EMPTY ) {
                result = true;}
             } 
                       
@@ -33,33 +34,33 @@ public class Bord {
         public void DoeZet(int[] zet, int speler){ 
            int kolom = zet[0];
            int rij = zet[1];
-           cellen[kolom][rij] = speler;
+           velden[kolom][rij] = speler;
         }
              
       public boolean WinnendeZet(int[] zet, int speler) {
            int kolom = zet[0];
            int rij = zet[1];
                          
-          return (cellen[kolom][0] == speler// 3-in-the-row
-                   && cellen[kolom][1] == speler
-                   && cellen[kolom][2] == speler
-              || cellen[0][rij] == speler// 3-in-the-column
-                   && cellen[1][rij] == speler
-                   && cellen[2][rij] == speler
+          return (velden[kolom][0] == speler// 3-in-the-row
+                   && velden[kolom][1] == speler
+                   && velden[kolom][2] == speler
+              || velden[0][rij] == speler// 3-in-the-column
+                   && velden[1][rij] == speler
+                   && velden[2][rij] == speler
               || rij == kolom// 3-in-the-diagonal
-                   && cellen[0][0] == speler
-                   && cellen[1][1] == speler
-                   && cellen[2][2] == speler
+                   && velden[0][0] == speler
+                   && velden[1][1] == speler
+                   && velden[2][2] == speler
               || rij + kolom == 2  // 3-in-the-opposite-diagonal
-                   && cellen[0][2] == speler
-                   && cellen[1][1] == speler
-                   && cellen[2][0] == speler);
+                   && velden[0][2] == speler
+                   && velden[1][1] == speler
+                   && velden[2][0] == speler);
    }
         
    public boolean isGelijkSpel() {
       for (int i = 0; i <= 2; i++) {
          for (int j = 0; j <= 2; j++) {
-            if (cellen[i][j] == EMPTY) {
+            if (velden[i][j] == EMPTY) {
                return false;  
             }
          }
@@ -67,10 +68,41 @@ public class Bord {
       return true; 
    }
       
+  public boolean gewonnen(int speler) {
+    // horizontalCheck 
+    for (int i = 0; i<=2; i++ ){
+        int j = 0;
+        if (velden[i][j] == speler && velden[i][j+1] == speler && velden[i][j+2] == speler ){
+          return true;
+        }
+    }
+    // vertical check 
+    for (int j=0;j<= 2;j++) {
+      int i = 0;
+      if (velden[i][j] == speler && velden[i+1][j] == speler && velden[i+2][j] == speler ){
+        return true;
+      }           
+    }    
+    // ascendingDiagonalCheck 
+    int i = 2;
+    int j = 0;
+                     
+    if (velden[i][j] == speler && velden[i-1][j+1] == speler && velden[i-2][j+2] == speler ) {
+      return true;
+    }
+    // descendingDiagonalCheck
+    i = 2;
+    j = 2;
+    if (velden[i][j] == speler && velden[i-1][j-1] == speler && velden[i-2][j-2] == speler ) {
+      return true;
+    }
+    return false;
+  }
+   
     public void printcel(int i, int j) {
-      if (cellen[i][j] == EMPTY) System.out.print("-");
-      if (cellen[i][j] == USER) System.out.print("x");
-      if (cellen[i][j] == AGENT) System.out.print("o");
+      if (velden[i][j] == EMPTY) System.out.print("-");
+      if (velden[i][j] == USER) System.out.print("x");
+      if (velden[i][j] == AGENT) System.out.print("o");
     }
         
    public void printbord() {

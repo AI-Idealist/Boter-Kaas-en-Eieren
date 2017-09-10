@@ -3,10 +3,11 @@ package boterkaaseieren;
 import java.util.Scanner;
 
 public class Spel {
-  static final int EMPTY = -1;
-  static final int USER = 0;
-  static final int AGENT = 1;
- 
+    static final int EMPTY = -1;
+    static final int USER = 0;
+    static final int AGENT = 1;
+    static final int DIM = 3; 
+   
   Bord bord = new Bord();
   int[] zet= new int[] {-1,-1};
   AISpelerMinMax aispeler = new AISpelerMinMax(bord);
@@ -27,8 +28,8 @@ public int[] GebruikerKiestZet(){
   return zet;
 }
  
-    // De gebruiker speelt met fiche o
-    // De agent speelt met fiche x
+    // De gebruiker speelt met fiche x
+    // De agent speelt met fiche o
     public int speel() {
             
         bord.printbord();
@@ -47,13 +48,13 @@ public int[] GebruikerKiestZet(){
             zet = GebruikerKiestZet();
             bord.DoeZet(zet,USER); 
             bord.printbord();
-            if (bord.WinnendeZet(zet,USER)) {System.out.println("Jij Wint!");break;}
-            else if (bord.isGelijkSpel()) {System.out.println("Gelijk spel");break;}
+            if (this.bord.gewonnen(USER)) {System.out.println("U wint!");break;}
+             else if (bord.isGelijkSpel()) {System.out.println("Gelijk spel");break;}
             
             zet = aispeler.KiestZetIntelligent();
             bord.DoeZet(zet, AGENT);
-             bord.printbord();
-            if (bord.WinnendeZet(zet,AGENT)) {System.out.println("Agent wint!");break;}
+            bord.printbord();
+            if (this.bord.gewonnen(AGENT)) {System.out.println("Agent Wint!");break;}
             else if (bord.isGelijkSpel()) {System.out.println("Gelijk spel");break;}
         }
         return 1;

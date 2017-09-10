@@ -3,43 +3,42 @@ package boterkaaseieren;
 import java.util.ArrayList;
 import java.util.List;
 
+import static boterkaaseieren.Spel.EMPTY;
+import static boterkaaseieren.Spel.AGENT;
+import static boterkaaseieren.Spel.USER;
+import static boterkaaseieren.Spel.DIM;
+
 public class AISpelerMinMax {
-      static final int EMPTY = -1;
-     static final int USER = 0;
-     static final int AGENT = 1;
-     static final int DIM = 3;
-     private Bord bord;
-     private int[][] lcellen = new int[DIM][DIM];
-       
-     private int teller=0;
-      
+  private Bord bord;
+  private int[][] lcellen = new int[DIM][DIM];
+        
     public AISpelerMinMax(Bord pbord) {
       bord = pbord;
    } 
        
-   // Agent kiest beste zet opbv van mogelijke opstellingen na n stappen 
+   // Agent kiest beste zet opbv van mogelijke opstellingen na n=2 stappen 
    public int[] KiestZetIntelligent() {
      int[] zet = new int[2];
     
      // kopieer bordcellen om neveneffecten te voorkomen.
      for(int i = 0; i <= DIM-1; i++) {
        for (int j = 0; j <=DIM-1 ; j++) {
-          lcellen[j][i] = bord.cellen[j][i];
+          lcellen[j][i] = bord.velden[j][i];
        }
      }
         
     int[] result = minimax(2, AGENT);
-     zet[0] = result[1];
+     zet[0] = result[1]; 
      zet[1] = result[2];
     return zet; 
     }
    
-   // retorneert score, bestCOl, bestRow 
+   // @retourneert  bestscore, bestCOl, bestRow 
    private int[] minimax(int diepte, int speler) {
       
-        List<int[]> mzetten = BepaalMogelijkeZetten();
+        List<int[]> mzetten = BepaalMogelijkeZetten();// mzetten = Mogelijke zetten
        
-      // agent is maximizing; while gebruiker is minimizing
+      // agent is maximizing; gebruiker is minimizing
       int bestscore = (speler == AGENT) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
       int score;
       int bestRow = -1;
@@ -50,10 +49,11 @@ public class AISpelerMinMax {
        }
        else {
         for (int[] mzet : mzetten) {
-            // Try this mzet for the current "speler"
+            
+            // probeer zet voor de huidige "speler"
             lcellen[mzet[0]][mzet[1]] = speler;
                   
-            if (speler==AGENT) {  // mySeed (computer) is maximizing speler
+            if (speler==AGENT) {  // AGENT is maximizing speler
                                 
                 score = minimax(diepte - 1, USER)[0];
                 System.out.println("************************");
@@ -66,7 +66,7 @@ public class AISpelerMinMax {
                   bestCol = mzet[0];
                   bestRow = mzet[1];
                }
-            } else {  // oppSeed is minimizing speler
+            } else {  // USER is minimizing speler
              
                 score = minimax(diepte - 1, AGENT)[0];
                 System.out.println("************************");
@@ -80,8 +80,8 @@ public class AISpelerMinMax {
                   bestRow = mzet[1];
                 }
             }
-            // Undo mzet
             
+            // Undo zet
             lcellen[mzet[0]][mzet[1]] = EMPTY;
          }
        }
@@ -102,10 +102,10 @@ public class AISpelerMinMax {
       return score;
    }
  
-   /** The heuristic evaluation function for the given line of 3 cells
-       @Return +100, +10, +1 for 3-, 2-, 1-in-a-line for computer.
-               -100, -10, -1 for 3-, 2-, 1-in-a-line for opponent.
-               0 otherwise */
+   // The heuristic evaluation function for the given line of 3 cells
+   // @Return +100, +10, +1 for 3-, 2-, 1-in-a-line for computer.
+   // -100, -10, -1 for 3-, 2-, 1-in-a-line for opponent.
+   // 0 otherwise 
    private int evalueerLijn(int row1, int col1, int row2, int col2, int row3, int col3) {
       int score = 0; 
  
@@ -163,7 +163,7 @@ public class AISpelerMinMax {
  
         
       // If gameover, i.e., no next move
-      if (hasWon(AGENT) || hasWon(USER)) {
+      if (gewonnen(AGENT) || gewonnen(USER)) {
          return nextMoves;   // return empty list
       }
             
@@ -178,27 +178,36 @@ public class AISpelerMinMax {
       return nextMoves;
    }
      
-   private int[] winningPatterns = {
-         0b111000000, 0b000111000, 0b000000111, // rows
-         0b100100100, 0b010010010, 0b001001001, // cols
-         0b100010001, 0b001010100               // diagonals
-   };
- 
-   /** Returns true if thePlayer wins */
-   private boolean hasWon(int thePlayer) {
-      int pattern = 0b000000000;  // 9-bit pattern for the 9 cells
-      for (int row = 0; row < 3; ++row) {
-         for (int col = 0; col < 3; ++col) {
-            if (lcellen[row][col] == thePlayer) {
-               pattern |= (1 << (row * 3 + col));
-            }
-         }
-      }
-      for (int winningPattern : winningPatterns) {
-         if ((pattern & winningPattern) == winningPattern) return true;
-      }
-      return false;
-   }
+   public boolean gewonnen(int speler) {
+    // drie in een kolom 
+    for (int i = 0; i<=2; i++ ){
+        int j = 0;
+        if (lcellen[i][j] == speler && lcellen[i][j+1] == speler && lcellen[i][j+2] == speler ){
+          return true;
+        }
+    }
+    // drie op een rij
+    for (int j=0;j<= 2;j++) {
+      int i = 0;
+      if (lcellen[i][j] == speler && lcellen[i+1][j] == speler && lcellen[i+2][j] == speler ){
+        return true;
+      }           
+    }    
+    // drie opgaande diagonaal
+    int i = 2;
+    int j = 0;
+                     
+    if (lcellen[i][j] == speler && lcellen[i-1][j+1] == speler && lcellen[i-2][j+2] == speler ) {
+      return true;
+    }
+    // drie neergaande diagonaal
+    i = 2;
+    j = 2;
+    if (lcellen[i][j] == speler && lcellen[i-1][j-1] == speler && lcellen[i-2][j-2] == speler ) {
+      return true;
+    }
+    return false;
+  }
        
      public void printcel(int i, int j) {
       if (lcellen[i][j] == EMPTY) System.out.print("-");
@@ -215,7 +224,4 @@ public class AISpelerMinMax {
           } 
          System.out.println();    
      }
-        
-     
-     
-  }
+ }
